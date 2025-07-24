@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Uluduwade Minecraft 🇱🇰</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:'Poppins',sans-serif; background:#121212; color:#eee; min-height:100vh; overflow-x:hidden; }
+
+    /* Loader */
+    #loader {
+      position:fixed; inset:0;
+      background:linear-gradient(135deg,#ff512f,#dd2476);
+      display:flex; flex-direction:column;
+      justify-content:center; align-items:center;
+      z-index:9999; user-select:none;
+    }
+    .cube {
+      width:80px; height:80px;
+      position:relative; transform-style:preserve-3d;
+      animation:rotateCube 3s linear infinite;
+      margin-bottom:20px;
+    }
+    .face {
+      position:absolute; width:80px; height:80px;
+      background:#8b4513; border:3px solid #5c3100;
+      box-shadow:inset 0 0 10px #d2a679;
+    }
+    .face.top {
+      background:linear-gradient(135deg,#4caf50,#2e7d32);
+      border-color:#1b5e20;
+      box-shadow:inset 0 0 10px #81c784;
+    }
+    .face.front  { transform:translateZ(40px); }
+    .face.back   { transform:rotateY(180deg) translateZ(40px);}
+    .face.right  { transform:rotateY(90deg) translateZ(40px);}
+    .face.left   { transform:rotateY(-90deg) translateZ(40px);}
+    .face.top    { transform:rotateX(90deg) translateZ(40px);}
+    .face.bottom { transform:rotateX(-90deg) translateZ(40px);}
+    @keyframes rotateCube { from {transform:rotateX(0) rotateY(0);} to {transform:rotateX(360deg) rotateY(360deg);} }
+
+    /* Loader text */
+    .loader-text { color:white; font-weight:700; font-size:1.2rem; }
+
+    /* Main content fade */
+    #main-content { opacity:0; transform:translateY(20px); animation:fadeIn 0.8s ease forwards; animation-play-state:paused; max-width:1200px; margin:0 auto; padding:20px; }
+    @keyframes fadeIn { to { opacity:1; transform:translateY(0);} }
+
+    /* Header */
+    header.hero {
+      height:70vh; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden;
+      border-radius:12px; box-shadow:0 0 20px #dd2476; text-align:center; color:#fff;
+    }
+    header.hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.5); }
+    .hero-content { position:relative; z-index:2; max-width:700px; padding:0 15px; }
+    .hero-content h1 { font-size:3.5rem; margin-bottom:15px; background:linear-gradient(90deg,#ff512f,#dd2476); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .hero-content p { font-size:1.4rem; margin-bottom:25px; color:#f0e6e6cc; }
+    .btn { background:#ff512f; padding:12px 35px; font-weight:700; font-size:1.1rem; border:none; border-radius:50px;
+      color:#fff; box-shadow:0 4px 15px #ff512fcc; transition:background .3s; text-decoration:none; cursor:pointer; }
+    .btn:hover { background:#dd2476; box-shadow:0 6px 20px #dd2476cc; }
+
+    /* Ranks */
+    .rank-cards { display:flex; flex-wrap:wrap; gap:25px; margin-top:50px; justify-content:center; padding-bottom:50px; }
+    .rank-card { background:#1e1e1e; border-radius:15px; padding:25px 30px; width:300px;
+      box-shadow:0 5px 20px #ff512f55; display:flex; flex-direction:column; align-items:center;
+      transition:transform .3s,box-shadow .3s; }
+    .rank-card:hover { transform:translateY(-10px); box-shadow:0 10px 30px #dd2476aa; }
+    .rank-card h3 { font-size:1.8rem; margin-bottom:12px;
+      background:linear-gradient(90deg,#ff512f,#dd2476); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+    .price { font-size:1.4rem; font-weight:700; color:#00ffbf; margin-bottom:18px;}
+    .rank-card ul { list-style:none; width:100%; margin-bottom:20px; color:#ccc; }
+    .rank-card ul li { padding-left:22px; margin-bottom:10px; position:relative; font-size:1rem; user-select:none; }
+    .rank-card ul li::before { content:'✔'; position:absolute; left:0; top:0; color:#00ffbf; font-weight:700; }
+    .btn-buy { margin-top:auto; padding:12px 35px; background:#00ffbf; color:#111; font-weight:700; border-radius:50px;
+      text-decoration:none; width:100%; text-align:center; box-shadow:0 4px 15px #00ffbfcc; transition:background .3s; user-select:none; }
+    .btn-buy:hover { background:#00cc9a; box-shadow:0 6px 20px #00cc9acc; }
+
+    /* Footer */
+    footer { text-align:center; padding:20px 10px; background:#0e0e0e; color:#777; font-size:.9rem; }
+
+    /* Responsive */
+    @media(max-width:720px) { header.hero { height:50vh; } .hero-content h1 { font-size:2.4rem;} .hero-content p { font-size:1.1rem;}
+      .btn, .btn-buy { font-size:1.2rem; padding:14px 25px;} .rank-card { width:90%; max-width:400px;} }
+  </style>
+</head>
+<body>
+  <div id="loader">
+    <div class="cube">
+      <div class="face front"></div>
+      <div class="face back"></div>
+      <div class="face right"></div>
+      <div class="face left"></div>
+      <div class="face top"></div>
+      <div class="face bottom"></div>
+    </div>
+    <div class="loader-text">Loading Uluduwade Minecraft 🇱🇰...</div>
+  </div>
+
+  <div id="main-content" style="display:none;">
+    <header class="hero">
+      <div class="overlay"></div>
+      <div class="hero-content">
+        <h1>Uluduwade Minecraft 🇱🇰</h1>
+        <p>Support the Server by Purchasing Ranks</p>
+        <a href="#ranks" class="btn">View Ranks</a>
+      </div>
+    </header>
+
+    <section id="ranks" class="rank-cards">
+      <div class="rank-card">
+        <h3>Gold Supporter</h3><p class="price">Rs. 600</p>
+        <ul><li>Gold Supporter Tag</li><li>$200,000 In‑game Money</li><li>2x Spawners OR Lv.2 Minion</li><li>2 Home Saves</li></ul>
+        <a class="btn-buy" href="https://wa.me/94761072773?text=I%20like%20to%20purchase%20Gold%20Supporter" target="_blank">Buy Now</a>
+      </div>
+      <div class="rank-card">
+        <h3>Diamond Supporter</h3><p class="price">Rs. 1000</p>
+        <ul><li>Diamond Supporter Tag</li><li>$500,000 In‑game Money</li><li>5x Spawners OR Lv.5 Minion</li><li>4 Home Saves</li></ul>
+        <a class="btn-buy" href="https://wa.me/94761072773?text=I%20like%20to%20purchase%20Diamond%20Supporter" target="_blank">Buy Now</a>
+      </div>
+      <div class="rank-card">
+        <h3>Mythic Supporter</h3><p class="price">Rs. 1700</p>
+        <ul><li>Custom Server Tag</li><li>$1,000,000 In‑game Money</li><li>10x Spawners & Lv.7 Minion</li><li>6 Home Saves</li></ul>
+        <a class="btn-buy" href="https://wa.me/94761072773?text=I%20like%20to%20purchase%20Mythic%20Supporter" target="_blank">Buy Now</a>
+      </div>
+    </section>
+    <footer>&copy; 2025 Uluduwade Minecraft Sri Lanka. All rights reserved.</footer>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      const loader = document.getElementById('loader');
+      const main = document.getElementById('main-content');
+      const header = document.querySelector('header.hero');
+      const backgrounds = [
+        'https://imgs.search.brave.com/2oh1F5msvOlI5kDNBcbLCAqGm6YWN76JsJeCdHIqXu8/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvR29sZC1NaW5l/LTEtMTAyNHg1NzYu/cG5n',
+        'https://imgs.search.brave.com/kTB-IHnfhjefUwzQOdHb7tyBegym0iL5_R8MAunn0v4/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvTWluZWNyYWZ0/LVJhaWxzLTEwMjR4/NTc2LnBuZw',
+        'https://imgs.search.brave.com/WI-vx3k9BOKsQzs7stBhipM15BxRykPNane3T02PX8M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/Y2hlc3QvdGh1bWJu/YWlsLmpwZw',
+        'https://imgs.search.brave.com/VV7eQjWYuCB1rd8MC0RTLSFg5_VHvgiYAiDLzOFUiQI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/bWluZXNoYWZ0Mi90/aHVtYm5haWwuanBn',
+      ];
+      let idx = 0;
+      function switchBg(){
+        header.style.background = `url('${backgrounds[idx]}') no-repeat center/cover`;
+        idx = (idx + 1) % backgrounds.length;
+      }
+      switchBg();
+      setInterval(switchBg, 5000);
+
+      setTimeout(() => {
+        loader.style.transition = 'opacity 0.6s ease';
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          main.style.display = 'block';
+          main.style.animationPlayState = 'running';
+        }, 600);
+      }, 4000);
+    });
+  </script>
+</body>
+</html>
