@@ -3,142 +3,268 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BetterLK Minecraft Sri lanka</title>
+  <title>BetterLK Minecraft Server</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Poppins',sans-serif; background:#0d1117; color:#eee; min-height:100vh; overflow-x:hidden; }
-
-    /* Back Button */
-    #back-btn {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 9000;
-      padding: 10px 20px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #fff;
-      background: #0072ff;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      box-shadow: 0 4px 10px #0072ff88;
-      transition: background 0.3s;
-      display: none;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
     }
-    #back-btn:hover {
-      background: #005bb5;
-      box-shadow: 0 6px 20px #005bb5aa;
+    body {
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      transition: background-image 1s ease-in-out;
+      background-color: #0d1117;
+      color: #eee;
+      overflow-x: hidden;
+    }
+    @media (max-width: 720px) {
+      body {
+        background-attachment: scroll; /* Fix flicker and performance on mobile */
+        background-size: cover;        /* Keep full coverage */
+      }
     }
 
+    /* Loader */
     #loader {
-      position:fixed; inset:0;
-      background:linear-gradient(135deg,#00c6ff,#0072ff);
-      display:flex; flex-direction:column;
-      justify-content:center; align-items:center;
-      z-index:9999; user-select:none;
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      user-select: none;
     }
     .cube {
-      width:80px; height:80px;
-      position:relative; transform-style:preserve-3d;
-      animation:rotateCube 3s linear infinite;
-      margin-bottom:20px;
+      width: 80px;
+      height: 80px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: rotateCube 3s linear infinite;
+      margin-bottom: 20px;
     }
     .face {
-      position:absolute; width:80px; height:80px;
-      background:#005b96; border:3px solid #003f63;
-      box-shadow:inset 0 0 10px #3399ff;
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      background: #005b96;
+      border: 3px solid #003f63;
+      box-shadow: inset 0 0 10px #3399ff;
     }
     .face.top {
-      background:linear-gradient(135deg,#00e5ff,#0077be);
-      border-color:#006494;
-      box-shadow:inset 0 0 10px #4dd0e1;
+      background: linear-gradient(135deg, #00e5ff, #0077be);
+      border-color: #006494;
+      box-shadow: inset 0 0 10px #4dd0e1;
     }
-    .face.front  { transform:translateZ(40px); }
-    .face.back   { transform:rotateY(180deg) translateZ(40px);}
-    .face.right  { transform:rotateY(90deg) translateZ(40px);}
-    .face.left   { transform:rotateY(-90deg) translateZ(40px);}
-    .face.top    { transform:rotateX(90deg) translateZ(40px);}
-    .face.bottom { transform:rotateX(-90deg) translateZ(40px);}
-    @keyframes rotateCube { from {transform:rotateX(0) rotateY(0);} to {transform:rotateX(360deg) rotateY(360deg);} }
+    .face.front {
+      transform: translateZ(40px);
+    }
+    .face.back {
+      transform: rotateY(180deg) translateZ(40px);
+    }
+    .face.right {
+      transform: rotateY(90deg) translateZ(40px);
+    }
+    .face.left {
+      transform: rotateY(-90deg) translateZ(40px);
+    }
+    .face.top {
+      transform: rotateX(90deg) translateZ(40px);
+    }
+    .face.bottom {
+      transform: rotateX(-90deg) translateZ(40px);
+    }
+    @keyframes rotateCube {
+      from {
+        transform: rotateX(0) rotateY(0);
+      }
+      to {
+        transform: rotateX(360deg) rotateY(360deg);
+      }
+    }
+    .loader-text {
+      color: white;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
 
-    .loader-text { color:white; font-weight:700; font-size:1.2rem; }
-
-    #main-content { opacity:0; transform:translateY(20px); animation:fadeIn 0.8s ease forwards; animation-play-state:paused; max-width:1200px; margin:0 auto; padding:20px; }
-    @keyframes fadeIn { to { opacity:1; transform:translateY(0);} }
-
-    header.hero {
-      height:70vh; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden;
-      border-radius:12px; box-shadow:0 0 20px #00c6ff; text-align:center; color:#fff;
+    #main-content {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 0.8s ease forwards;
+      animation-play-state: paused;
     }
-    header.hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.5); }
-    .hero-content { position:relative; z-index:2; max-width:700px; padding:0 15px; }
-    .hero-content h1 {
-      font-size:3.5rem; margin-bottom:15px;
-      background:linear-gradient(90deg,#00c6ff,#0072ff);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .hero-content p { font-size:1.4rem; margin-bottom:25px; color:#f0e6e6cc; }
-    .btn {
-      background:#00c6ff; padding:12px 35px; font-weight:700; font-size:1.1rem; border:none; border-radius:50px;
-      color:#fff; box-shadow:0 4px 15px #00c6ffcc; transition:background .3s; text-decoration:none; cursor:pointer;
-    }
-    .btn:hover {
-      background:#0072ff; box-shadow:0 6px 20px #0072ffcc;
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .rank-cards {
-      display:flex; flex-wrap:wrap; gap:25px; margin-top:50px; justify-content:center; padding-bottom:50px;
+    header {
+      background: url('header-bg.jpg') center/cover no-repeat;
+      padding: 60px 20px;
+      text-align: center;
+      position: relative;
+      color: #fff;
     }
-    .rank-card {
-      background:#1e1e1e; border-radius:15px; padding:25px 30px; width:300px;
-      box-shadow:0 5px 20px #00c6ff55; display:flex; flex-direction:column; align-items:center;
-      transition:transform .3s,box-shadow .3s;
+    header::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
     }
-    .rank-card:hover {
-      transform:translateY(-10px); box-shadow:0 10px 30px #0072ffaa;
+    header * {
+      position: relative;
+      z-index: 2;
     }
-    .rank-card h3 {
-      font-size:1.8rem; margin-bottom:12px;
-      background:linear-gradient(90deg,#00c6ff,#0072ff);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+
+    .logo {
+      width: 280px;
+      margin-bottom: 20px;
     }
-    .price { font-size:1.4rem; font-weight:700; color:#4dd0e1; margin-bottom:18px;}
-    .rank-card ul {
-      list-style:none; width:100%; margin-bottom:20px; color:#ccc;
+
+    .nav {
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
     }
-    .rank-card ul li {
-      padding-left:22px; margin-bottom:10px; position:relative; font-size:1rem; user-select:none;
+    .nav a {
+      background: #00c6ff;
+      color: #0d1117;
+      padding: 10px 22px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-decoration: none;
+      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
+      box-shadow: 0 4px 8px rgb(0 198 255 / 0.3);
     }
-    .rank-card ul li::before {
-      content:'✔'; position:absolute; left:0; top:0; color:#4dd0e1; font-weight:700;
+    .nav a:hover {
+      background: #0072ff;
+      color: #fff;
+      box-shadow: 0 6px 12px rgb(0 114 255 / 0.6);
     }
-    .btn-buy {
-      margin-top:auto; padding:12px 35px; background:#00c6ff; color:#111; font-weight:700; border-radius:50px;
-      text-decoration:none; width:100%; text-align:center; box-shadow:0 4px 15px #00c6ffcc; transition:background .3s; user-select:none;
+
+    .status {
+      margin-top: 30px;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
     }
-    .btn-buy:hover {
-      background:#0099cc; box-shadow:0 6px 20px #0099cccc;
+    .status-box {
+      background: #1c1c1c;
+      padding: 12px 25px;
+      border-radius: 12px;
+      border: 2px solid #00c6ff;
+    }
+    .status-box span {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+    .status-box code {
+      background: #222;
+      padding: 3px 8px;
+      border-radius: 6px;
+      user-select: all;
+      font-family: monospace;
+    }
+    .status-box a {
+      color: #00c6ff;
+      text-decoration: none;
+    }
+
+    #copy-ip-btn {
+      background: #00c6ff;
+      border: none;
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+      color: #0d1117;
+    }
+    #copy-ip-btn:hover {
+      background: #0072ff;
+      color: white;
+    }
+
+    .content {
+      padding: 50px 20px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .welcome {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      color: #4dd0e1;
+      text-align: center;
+    }
+
+    .news {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(145deg, #12202f, #0e1828);
+      padding: 20px 25px;
+      border-radius: 15px;
+      border-left: 6px solid #00c6ff;
+      box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: default;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0, 198, 255, 0.6);
+    }
+    .card h3 {
+      color: #00c6ff;
+      margin-bottom: 12px;
+      font-weight: 700;
+    }
+    .card p {
+      color: #b0b8c1;
+      font-size: 1rem;
+      line-height: 1.4;
     }
 
     footer {
-      text-align:center; padding:20px 10px; background:#0e0e0e; color:#777; font-size:.9rem;
+      text-align: center;
+      padding: 20px;
+      background: #0e0e0e;
+      color: #777;
+      font-size: 0.9rem;
     }
 
-    @media(max-width:720px) {
-      header.hero { height:50vh; }
-      .hero-content h1 { font-size:2.4rem;}
-      .hero-content p { font-size:1.1rem;}
-      .btn, .btn-buy { font-size:1.2rem; padding:14px 25px;}
-      .rank-card { width:90%; max-width:400px;}
+    @media (max-width: 720px) {
+      .logo {
+        width: 220px;
+      }
+      .nav a {
+        margin: 10px 8px;
+        font-size: 1rem;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- Back Button -->
-  <button id="back-btn">HOME</button>
-
   <!-- Loader -->
   <div id="loader">
     <div class="cube">
@@ -153,57 +279,78 @@
   </div>
 
   <!-- Main Content -->
-  <div id="main-content" style="display:none;">
-    <header class="hero">
-      <div class="overlay"></div>
-      <div class="hero-content">
-        <h1>BetterLK Minecraft Sri Lanka</h1>
-        <p>Support the Server by Purchasing Ranks</p>
-        <a href="#ranks" class="btn">View Ranks</a>
+  <div id="main-content" style="display: none;">
+    <header>
+      <img class="logo" src="logo.png" alt="BetterLK Logo" />
+      <h1>Welcome to BetterLK Minecraft Server</h1>
+      <div class="nav">
+        <a href="about.html">About</a>
+        <a href="vote.html">Vote</a>
+        <a href="supporter.html">Rank</a> <!-- Store links to supporter.html -->
+        <a href="https://discord.gg/KWS9RcTrW5" target="_blank">Discord</a>
+      </div>
+      <div class="status">
+        <div class="status-box">
+          <strong>Server IP</strong>
+          <span>
+            <code id="server-ip">betterlk.nx-mc.xyz:2500</code>
+            <button id="copy-ip-btn" aria-label="Copy Server IP">📋</button>
+          </span>
+        </div>
+        <div class="status-box">
+          <strong>Discord</strong>
+          <span><a href="https://discord.gg/KWS9RcTrW5" target="_blank">Join Us</a></span>
+        </div>
       </div>
     </header>
 
-    <section id="ranks" class="rank-cards">
-      <div class="rank-card">
-        <h3>Gold Supporter</h3><p class="price">Rs. 600</p>
-        <ul><li>Gold Supporter Tag</li><li>$200,000 In‑game Money</li><li>2x Spawners OR Lv.2 Minion</li><li>2 Home Saves</li></ul>
-        <a class="btn-buy" href="https://wa.me/94761072773?text=I%20like%20to%20purchase%20Gold%20Supporter" target="_blank">Buy Now</a>
-      </div>
-      <div class="rank-card">
-        <h3>Diamond Supporter</h3><p class="price">Rs. 1000</p>
-        <ul><li>Diamond Supporter Tag</li><li>$500,000 In‑game Money</li><li>5x Spawners OR Lv.5 Minion</li><li>4 Home Saves</li></ul>
-        <a class="btn-buy" href="https://wa.me/94761072773?text=I%20like%20to%20purchase%20Diamond%20Supporter" target="_blank">Buy Now</a>
-      </div>
-      <div class="rank-card">
-        <h3>Mythic Supporter</h3><p class="price">Rs. 1700</p>
-        <ul><li>Custom Server Tag</li><li>$1,000,000 In‑game Money</li><li>10x Spawners & Lv.7 Minion</li><li>6 Home Saves</li></ul>
-        <a class="btn-buy" href="https://wa.me/94761072773?text=I%20like%20to%20purchase%20Mythic%20Supporter" target="_blank">Buy Now</a>
-      </div>
-    </section>
+    <div class="content">
+      <div class="welcome">Enjoy a fully customized Better Minecraft experience with land claiming, auction shops, and more!</div>
 
-    <footer>&copy; 2025 BetterLK Minecraft Sri Lanka. All rights reserved.</footer>
+      <div class="news">
+        <div class="card">
+          <h3>🚀 Auction Shop Added!</h3>
+          <p>Players can now trade items via the new Auction Shop system. Access it using /ah in-game!</p>
+        </div>
+
+        <div class="card">
+          <h3>🏛️ Land Claim System Added!</h3>
+          <p>Protect your builds with our new land claiming system. Use /claim to get started.</p>
+        </div>
+
+        <div class="card">
+          <h3>🚧 Server Upgraded to BetterMC V44</h3>
+          <p>We have upgraded to the latest version of BetterMC for improved features and performance!</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      &copy; 2025 BetterLK Network. All Rights Reserved.
+    </footer>
   </div>
 
   <script>
+    const backgrounds = [
+      'url("https://imgs.search.brave.com/2oh1F5msvOlI5kDNBcbLCAqGm6YWN76JsJeCdHIqXu8/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvR29sZC1NaW5l/LTEtMTAyNHg1NzYu/cG5n")',
+      'url("https://imgs.search.brave.com/kTB-IHnfhjefUwzQOdHb7tyBegym0iL5_R8MAunn0v4/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvTWluZWNyYWZ0/LVJhaWxzLTEwMjR4/NTc2LnBuZw")',
+      'url("https://imgs.search.brave.com/WI-vx3k9BOKsQzs7stBhipM15BxRykPNane3T02PX8M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/Y2hlc3QvdGh1bW5h/aWwuanBn")',
+      'url("https://imgs.search.brave.com/VV7eQjWYuCB1rd8MC0RTLSFg5_VHvgiYAiDLzOFUiQI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/bWluZXNoYWZ0Mi90/aHVtYm5haWwuanBn")'
+    ];
+
+    let currentIndex = 0;
+
+    function changeBackground() {
+      currentIndex = (currentIndex + 1) % backgrounds.length;
+      document.body.style.backgroundImage = backgrounds[currentIndex];
+    }
+
     window.addEventListener('load', () => {
       const loader = document.getElementById('loader');
       const main = document.getElementById('main-content');
-      const backBtn = document.getElementById('back-btn');
-      const header = document.querySelector('header.hero');
 
-      const backgrounds = [
-        'https://imgs.search.brave.com/2oh1F5msvOlI5kDNBcbLCAqGm6YWN76JsJeCdHIqXu8/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvR29sZC1NaW5l/LTEtMTAyNHg1NzYu/cG5n',
-        'https://imgs.search.brave.com/kTB-IHnfhjefUwzQOdHb7tyBegym0iL5_R8MAunn0v4/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvTWluZWNyYWZ0/LVJhaWxzLTEwMjR4/NTc2LnBuZw',
-        'https://imgs.search.brave.com/WI-vx3k9BOKsQzs7stBhipM15BxRykPNane3T02PX8M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/Y2hlc3QvdGh1bWJu/YWlsLmpwZw',
-        'https://imgs.search.brave.com/VV7eQjWYuCB1rd8MC0RTLSFg5_VHvgiYAiDLzOFUiQI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/bWluZXNoYWZ0Mi90/aHVtYm5haWwuanBn',
-      ];
-      let idx = 0;
-      function switchBg(){
-        header.style.background = `url('${backgrounds[idx]}') no-repeat center/cover`;
-        idx = (idx + 1) % backgrounds.length;
-      }
-      switchBg();
-      setInterval(switchBg, 5000);
+      // Set initial background explicitly
+      document.body.style.backgroundImage = backgrounds[0];
 
       setTimeout(() => {
         loader.style.transition = 'opacity 0.6s ease';
@@ -212,12 +359,20 @@
           loader.style.display = 'none';
           main.style.display = 'block';
           main.style.animationPlayState = 'running';
-          backBtn.style.display = 'inline-block';
         }, 600);
       }, 4000);
 
-      backBtn.addEventListener('click', () => {
-        window.history.back();
+      // Start background rotation every 8 seconds
+      setInterval(changeBackground, 8000);
+
+      // Copy IP button logic
+      document.getElementById('copy-ip-btn').addEventListener('click', () => {
+        const ipText = document.getElementById('server-ip').textContent;
+        navigator.clipboard.writeText(ipText).then(() => {
+          alert('Server IP copied to clipboard!');
+        }).catch(() => {
+          alert('Failed to copy. Please copy manually.');
+        });
       });
     });
   </script>
