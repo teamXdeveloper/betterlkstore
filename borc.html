@@ -11,6 +11,37 @@
       color: #fff;
       text-align: center;
       padding: 50px;
+      overflow: hidden;
+    }
+
+    /* Loader cube */
+    .loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #0d0d0d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+    .cube {
+      width: 40px;
+      height: 40px;
+      background: #00c3ff;
+      animation: rotateCube 1.5s infinite ease-in-out;
+    }
+    @keyframes rotateCube {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(180deg) scale(1.3); }
+      100% { transform: rotate(360deg) scale(1); }
+    }
+
+    /* Page content */
+    .content {
+      display: none;
     }
     h1 {
       margin-bottom: 20px;
@@ -32,6 +63,9 @@
     .card {
       background: #28a745;
     }
+    .back {
+      background: #ff4757;
+    }
     .btn:hover {
       opacity: 0.8;
       transform: scale(1.05);
@@ -39,10 +73,30 @@
   </style>
 </head>
 <body>
-  <h1>Select Your Payment Method</h1>
-  <p id="rankLabel">Choose a method to continue</p>
+  <!-- Loader -->
+  <div class="loader">
+    <div class="cube"></div>
+  </div>
 
-  <a id="bankBtn" class="btn bank" href="https://wa.me/94761072773?text=B Nipuna indrajith/263200130064918/kuruwita/peoples_bank/transfer your package money and send recipt to this number">🏦 Bank Transfer</a>
-  <a id="cardBtn" class="btn card" href="https://buymeacoffee.com/nipunindrajith">💳 Card Payment</a>
+  <!-- Content -->
+  <div class="content">
+    <h1>Select Your Payment Method</h1>
+    <p id="rankLabel">Choose a method to continue</p>
+
+    <a id="bankBtn" class="btn bank" href="https://wa.me/94761072773?text=B Nipuna indrajith/263200130064918/kuruwita/peoples_bank/transfer your package money and send recipt to this number">🏦 Bank Transfer</a>
+    <a id="cardBtn" class="btn card" href="https://buymeacoffee.com/nipunindrajith">💳 Card Payment</a>
+    <br>
+    <a href="index.html" class="btn back">⬅ Back to Home</a>
+  </div>
+
+  <script>
+    // Loader hide after 2 seconds
+    window.addEventListener("load", () => {
+      setTimeout(() => {
+        document.querySelector(".loader").style.display = "none";
+        document.querySelector(".content").style.display = "block";
+      }, 2000);
+    });
+  </script>
 </body>
 </html>
