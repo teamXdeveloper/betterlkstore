@@ -1,385 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BetterLK Minecraft Network</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      transition: background-image 1s ease-in-out;
-      background-color: #0d1117;
-      color: #eee;
-      overflow-x: hidden;
-    }
-    @media (max-width: 720px) {
-      body {
-        background-attachment: scroll; /* Fix flicker and performance on mobile */
-        background-size: cover;        /* Keep full coverage */
-      }
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BetterLK Minecraft Network</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+  body {
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    transition: background-image 1s ease-in-out, background-color 0.5s, color 0.5s;
+    background-color: #0d1117;
+    color: #eee;
+    overflow-x: hidden;
+  }
+  body.light { 
+    background-color:#f0f0f0; 
+    color:#111; 
+  }
+  body.light header::after { background: rgba(255,255,255,0.3); }
+  body.light .status-box { background:#eee; color:#111; border-color:#0072ff; }
+  body.light .status-box code { background:#ddd; color:#111; }
+  body.light .status-box a { color:#0072ff; }
+  body.light #copy-ip-btn { background:#0072ff; color:#fff; }
+  body.light #copy-ip-btn:hover { background:#00c6ff; color:#111; }
 
-    /* Loader */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      user-select: none;
-    }
-    .cube {
-      width: 80px;
-      height: 80px;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: rotateCube 3s linear infinite;
-      margin-bottom: 20px;
-    }
-    .face {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      background: #005b96;
-      border: 3px solid #003f63;
-      box-shadow: inset 0 0 10px #3399ff;
-    }
-    .face.top {
-      background: linear-gradient(135deg, #00e5ff, #0077be);
-      border-color: #006494;
-      box-shadow: inset 0 0 10px #4dd0e1;
-    }
-    .face.front {
-      transform: translateZ(40px);
-    }
-    .face.back {
-      transform: rotateY(180deg) translateZ(40px);
-    }
-    .face.right {
-      transform: rotateY(90deg) translateZ(40px);
-    }
-    .face.left {
-      transform: rotateY(-90deg) translateZ(40px);
-    }
-    .face.top {
-      transform: rotateX(90deg) translateZ(40px);
-    }
-    .face.bottom {
-      transform: rotateX(-90deg) translateZ(40px);
-    }
-    @keyframes rotateCube {
-      from {
-        transform: rotateX(0) rotateY(0);
-      }
-      to {
-        transform: rotateX(360deg) rotateY(360deg);
-      }
-    }
-    .loader-text {
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
+  @media (max-width:720px){ body { background-attachment: scroll; background-size: cover; } }
 
-    #main-content {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.8s ease forwards;
-      animation-play-state: paused;
-    }
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+  /* Loader */
+  #loader { position: fixed; inset:0; background:linear-gradient(135deg,#00c6ff,#0072ff); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; }
+  .cube { width:80px;height:80px;position:relative;transform-style:preserve-3d;animation:rotateCube 3s linear infinite;margin-bottom:20px; }
+  .face { position:absolute;width:80px;height:80px;background:#005b96;border:3px solid #003f63;box-shadow:inset 0 0 10px #3399ff; }
+  .face.top { background:linear-gradient(135deg,#00e5ff,#0077be); border-color:#006494; box-shadow: inset 0 0 10px #4dd0e1; }
+  .face.front{transform:translateZ(40px);} .face.back{transform:rotateY(180deg) translateZ(40px);}
+  .face.right{transform:rotateY(90deg) translateZ(40px);} .face.left{transform:rotateY(-90deg) translateZ(40px);}
+  .face.top{transform:rotateX(90deg) translateZ(40px);} .face.bottom{transform:rotateX(-90deg) translateZ(40px);}
+  @keyframes rotateCube { from{transform:rotateX(0) rotateY(0);} to{transform:rotateX(360deg) rotateY(360deg);} }
+  .loader-text { color:white;font-weight:700;font-size:1.2rem; }
 
-    header {
-      background: url('header-bg.jpg') center/cover no-repeat;
-      padding: 60px 20px;
-      text-align: center;
-      position: relative;
-      color: #fff;
-    }
-    header::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 1;
-    }
-    header * {
-      position: relative;
-      z-index: 2;
-    }
+  #main-content { opacity:0; transform:translateY(20px); animation:fadeIn 0.8s ease forwards; animation-play-state:paused; }
+  @keyframes fadeIn { to{opacity:1; transform:translateY(0);} }
 
-    .logo {
-      width: 280px;
-      margin-bottom: 20px;
-    }
+  header {
+    background: url('header-bg.jpg') center/cover no-repeat;
+    padding:60px 20px;
+    text-align:center;
+    position:relative;
+    color:#fff;
+  }
+  header::after { content:""; position:absolute; inset:0; background:rgba(0,0,0,0.6); z-index:1; }
+  header * { position:relative; z-index:2; }
 
-    .nav {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    .nav a {
-      background: #00c6ff;
-      color: #0d1117;
-      padding: 10px 22px;
-      border-radius: 25px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      text-decoration: none;
-      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 4px 8px rgb(0 198 255 / 0.3);
-    }
-    .nav a:hover {
-      background: #0072ff;
-      color: #fff;
-      box-shadow: 0 6px 12px rgb(0 114 255 / 0.6);
-    }
+  .logo { width:280px; margin-bottom:20px; }
 
-    .status {
-      margin-top: 30px;
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .status-box {
-      background: #1c1c1c;
-      padding: 12px 25px;
-      border-radius: 12px;
-      border: 2px solid #00c6ff;
-    }
-    .status-box span {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 5px;
-      color: #ccc;
-      font-size: 0.95rem;
-    }
-    .status-box code {
-      background: #222;
-      padding: 3px 8px;
-      border-radius: 6px;
-      user-select: all;
-      font-family: monospace;
-    }
-    .status-box a {
-      color: #00c6ff;
-      text-decoration: none;
-    }
+  .nav { margin-top:25px; display:flex; justify-content:center; gap:15px; flex-wrap:wrap; }
+  .nav a { background:#00c6ff; color:#0d1117; padding:10px 22px; border-radius:25px; font-weight:700; font-size:1.1rem; text-decoration:none; transition: all .3s; box-shadow:0 4px 8px rgb(0 198 255 / 0.3); }
+  .nav a:hover { background:#0072ff; color:#fff; box-shadow:0 6px 12px rgb(0 114 255 / 0.6); }
 
-    #copy-ip-btn {
-      background: #00c6ff;
-      border: none;
-      border-radius: 6px;
-      padding: 4px 8px;
-      cursor: pointer;
-      font-size: 1rem;
-      transition: background-color 0.3s;
-      color: #0d1117;
-    }
-    #copy-ip-btn:hover {
-      background: #0072ff;
-      color: white;
-    }
+  .status { margin-top:30px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
+  .status-box { background:#1c1c1c; padding:12px 25px; border-radius:12px; border:2px solid #00c6ff; }
+  .status-box span { display:flex; align-items:center; gap:10px; margin-top:5px; color:#ccc; font-size:0.95rem; }
+  .status-box code { background:#222; padding:3px 8px; border-radius:6px; user-select: all; font-family: monospace; }
+  .status-box a { color:#00c6ff; text-decoration:none; display:flex; align-items:center; gap:6px; }
+  #copy-ip-btn { background:#00c6ff; border:none; border-radius:6px; padding:4px 8px; cursor:pointer; font-size:1rem; transition: background-color .3s; color:#0d1117; }
+  #copy-ip-btn:hover { background:#0072ff; color:white; }
 
-    .content {
-      padding: 50px 20px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    .welcome {
-      font-size: 1.5rem;
-      margin-bottom: 30px;
-      color: #4dd0e1;
-      text-align: center;
-    }
+  /* Theme toggle button */
+  #theme-toggle { position:fixed; top:20px; right:20px; z-index:9999; background:#0072ff; color:white; border:none; padding:10px 14px; border-radius:50%; cursor:pointer; font-size:1.2rem; transition:background .3s; }
+  #theme-toggle:hover { background:#00c6ff; }
 
-    .news {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
+  .content { padding:50px 20px; max-width:1000px; margin:auto; }
+  .welcome { font-size:1.5rem; margin-bottom:30px; color:#4dd0e1; text-align:center; }
+  .news { display:grid; grid-template-columns:1fr; gap:20px; }
+  .card { background: linear-gradient(145deg,#12202f,#0e1828); padding:20px 25px; border-radius:15px; border-left:6px solid #00c6ff; box-shadow:0 4px 15px rgba(0,198,255,.3); transition: transform .3s ease, box-shadow .3s ease; cursor:default; }
+  .card:hover { transform:translateY(-5px); box-shadow:0 8px 25px rgba(0,198,255,.6); }
+  .card h3 { color:#00c6ff; margin-bottom:12px; font-weight:700; }
+  .card p { color:#b0b8c1; font-size:1rem; line-height:1.4; }
 
-    .card {
-      background: linear-gradient(145deg, #12202f, #0e1828);
-      padding: 20px 25px;
-      border-radius: 15px;
-      border-left: 6px solid #00c6ff;
-      box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      cursor: default;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 8px 25px rgba(0, 198, 255, 0.6);
-    }
-    .card h3 {
-      color: #00c6ff;
-      margin-bottom: 12px;
-      font-weight: 700;
-    }
-    .card p {
-      color: #b0b8c1;
-      font-size: 1rem;
-      line-height: 1.4;
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #0e0e0e;
-      color: #777;
-      font-size: 0.9rem;
-    }
-
-    @media (max-width: 720px) {
-      .logo {
-        width: 220px;
-      }
-      .nav a {
-        margin: 10px 8px;
-        font-size: 1rem;
-      }
-    }
-  </style>
+  footer { text-align:center; padding:20px; background:#0e0e0e; color:#777; font-size:.9rem; }
+  @media(max-width:720px){ .logo{width:220px;} .nav a{margin:10px 8px;font-size:1rem;} }
+</style>
 </head>
 <body>
-  <!-- Loader -->
-  <div id="loader">
-    <div class="cube">
-      <div class="face front"></div>
-      <div class="face back"></div>
-      <div class="face right"></div>
-      <div class="face left"></div>
-      <div class="face top"></div>
-      <div class="face bottom"></div>
-    </div>
-    <div class="loader-text">BetterLK Minecraft...</div>
+<!-- Loader -->
+<div id="loader">
+  <div class="cube">
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face right"></div>
+    <div class="face left"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
   </div>
+  <div class="loader-text">BetterLK Minecraft...</div>
+</div>
 
-  <!-- Main Content -->
-  <div id="main-content" style="display: none;">
-    <header>
-      <img class="logo" src="logo.png" alt="BetterLK Logo" />
-      <h1>Welcome to BetterLK Minecraft Network</h1>
-      <div class="nav">
-        <a href="about.html">About</a>
-        <a href="vote.html">Vote</a>
-        <a href="supporter.html">Rank</a> <!-- Store links to supporter.html -->
-        <a href="https://discord.gg/4a3hBtDfTg" target="_blank">Discord</a>
-      </div>
-      <div class="status">
-        <div class="status-box">
-          <strong>Server IP</strong>
-          <span>
-            <code id="server-ip">betterlk.nx-mc.xyz</code>
-            <button id="copy-ip-btn" aria-label="Copy Server IP">📋</button>
-          </span>
-        </div>
-        <div class="status-box">
-          <strong>Discord</strong>
-          <span><a href="https://discord.gg/4a3hBtDfTg" target="_blank">Join Us</a></span>
-        </div>
-      </div>
-    </header>
+<!-- Theme Toggle Button -->
+<button id="theme-toggle" title="Toggle Dark/Light">🌙</button>
 
-    <div class="content">
-      <div class="welcome">Fully Customized Sri Lankan Minecraft Server!</div>
-
-      <div class="news">
-        <div class="card">
-          <h3>🚀 Auction Shop Added!</h3>
-          <p>Players can now trade items via the new Auction Shop system. Access it using /ah in-game!</p>
-        </div>
-
-        <div class="card">
-          <h3>🏛️ Land Claim System Added!</h3>
-          <p>Protect your builds with our new land claiming system. Use /claim to get started.</p>
-        </div>
-
-        <div class="card">
-          <h3>🚧 Server Upgraded to  1.21.8 </h3>
-          <p>We have upgraded to the latest version of Minecraft for improved features and performance!</p>
-        </div>
-      </div>
-    </div>
-
-    <footer>
-      &copy; 2025 BetterLK Network. All Rights Reserved.
-    </footer>
+<!-- Main Content -->
+<div id="main-content" style="display:none;">
+<header>
+  <img class="logo" src="blk.png" alt="BetterLK Logo" />
+  <h1>Welcome to BetterLK Minecraft Network</h1>
+  <div class="nav">
+    <a href="about.html">About</a>
+    <a href="vote.html">Vote</a>
+    <a href="supporter.html">Rank</a>
+    <a href="https://discord.gg/vSeWKUYF4w" target="_blank"> 
+      <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" alt="Discord" width="20" style="vertical-align:middle;margin-right:5px;"> Join Discord
+    </a>
   </div>
+  <div class="status">
+    <div class="status-box">
+      <strong>Server IP</strong>
+      <span>
+        <code id="server-ip">betterlk.nx-mc.xyz:25605</code>
+        <button id="copy-ip-btn" aria-label="Copy Server IP">📋</button>
+      </span>
+    </div>
+    <div class="status-box">
+      <strong>Discord</strong>
+      <span>
+        <a href="https://discord.gg/vSeWKUYF4w" target="_blank">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" alt="Discord" width="16" style="vertical-align:middle;margin-right:4px;">Join
+        </a>
+      </span>
+    </div>
+  </div>
+</header>
 
-  <script>
-    const backgrounds = [
-      'url("https://imgs.search.brave.com/2oh1F5msvOlI5kDNBcbLCAqGm6YWN76JsJeCdHIqXu8/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvR29sZC1NaW5l/LTEtMTAyNHg1NzYu/cG5n")',
-      'url("https://imgs.search.brave.com/kTB-IHnfhjefUwzQOdHb7tyBegym0iL5_R8MAunn0v4/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvTWluZWNyYWZ0/LVJhaWxzLTEwMjR4/NTc2LnBuZw")',
-      'url("https://imgs.search.brave.com/9V7RLBSwskdN1mBq5l9re0bojPIZFBG8hwLLeclM6e8/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvaGQvMjU2/MHgxNDQwLW1pbmVj/cmFmdC1mbHlpbmct/ZHJhZ29uLWZmaWNp/dGF4ZDRmZjZseGou/anBn")',
-      'url("https://imgs.search.brave.com/VV7eQjWYuCB1rd8MC0RTLSFg5_VHvgiYAiDLzOFUiQI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/bWluZXNoYWZ0Mi90/aHVtYm5haWwuanBn")'
-    ];
+<div class="content">
+  <div class="welcome">Fully Customized Sri Lankan Minecraft Server!</div>
+  <div class="news">
+    <div class="card">
+      <h3>🚀 Auction Shop Added!</h3>
+      <p>Players can now trade items via the new Auction Shop system. Access it using /ah in-game!</p>
+    </div>
+    <div class="card">
+      <h3>🏛️ Land Claim System Added!</h3>
+      <p>Protect your builds with our new land claiming system. Use /claim to get started.</p>
+    </div>
+    <div class="card">
+      <h3>🚧 Server Upgraded to 1.21.8</h3>
+      <p>We have upgraded to the latest version of Minecraft for improved features and performance!</p>
+    </div>
+  </div>
+</div>
 
-    let currentIndex = 0;
+<footer>&copy; 2025 BetterLK Network. All Rights Reserved.</footer>
+</div>
 
-    function changeBackground() {
-      currentIndex = (currentIndex + 1) % backgrounds.length;
-      document.body.style.backgroundImage = backgrounds[currentIndex];
-    }
+<script>
+const backgrounds = [
+  'url("https://imgs.search.brave.com/2oh1F5msvOlI5kDNBcbLCAqGm6YWN76JsJeCdHIqXu8/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvR29sZC1NaW5l/LTEtMTAyNHg1NzYu/cG5n")',
+  'url("https://imgs.search.brave.com/kTB-IHnfhjefUwzQOdHb7tyBegym0iL5_R8MAunn0v4/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvTWluZWNyYWZ0/LVJhaWxzLTEwMjR4/NTc2LnBuZw")'
+];
 
-    window.addEventListener('load', () => {
-      const loader = document.getElementById('loader');
-      const main = document.getElementById('main-content');
+let currentIndex = 0;
 
-      // Set initial background explicitly
-      document.body.style.backgroundImage = backgrounds[0];
+function changeBackground() {
+  currentIndex = (currentIndex + 1) % backgrounds.length;
+  document.body.style.backgroundImage = backgrounds[currentIndex];
+}
 
-      setTimeout(() => {
-        loader.style.transition = 'opacity 0.6s ease';
-        loader.style.opacity = '0';
-        setTimeout(() => {
-          loader.style.display = 'none';
-          main.style.display = 'block';
-          main.style.animationPlayState = 'running';
-        }, 600);
-      }, 4000);
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  const main = document.getElementById('main-content');
 
-      // Start background rotation every 8 seconds
-      setInterval(changeBackground, 8000);
+  document.body.style.backgroundImage = backgrounds[0];
 
-      // Copy IP button logic
-      document.getElementById('copy-ip-btn').addEventListener('click', () => {
-        const ipText = document.getElementById('server-ip').textContent;
-        navigator.clipboard.writeText(ipText).then(() => {
-          alert('Server IP copied to clipboard!');
-        }).catch(() => {
-          alert('Failed to copy. Please copy manually.');
-        });
-      });
-    });
-  </script>
+  setTimeout(() => {
+    loader.style.transition = 'opacity 0.6s ease';
+    loader.style.opacity = '0';
+    setTimeout(() => { loader.style.display = 'none'; main.style.display='block'; main.style.animationPlayState='running'; }, 600);
+  }, 4000);
+
+  setInterval(changeBackground,8000);
+
+  // Copy IP
+  document.getElementById('copy-ip-btn').addEventListener('click', ()=>{
+    const ipText = document.getElementById('server-ip').textContent;
+    navigator.clipboard.writeText(ipText).then(()=>{alert('Server IP copied!')}).catch(()=>{alert('Copy failed')});
+  });
+
+  // Theme toggle
+  const themeBtn = document.getElementById('theme-toggle');
+  themeBtn.addEventListener('click', ()=>{
+    document.body.classList.toggle('light');
+    themeBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+  });
+});
+</script>
 </body>
 </html>
-
-
-
-
-
