@@ -1,270 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BetterLK About</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
-  <style>
-    /* Base styling */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Poppins', sans-serif;
-    }
-    body {
-      background: #0d1117;
-      color: #eee;
-      overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BetterLK About</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+  body {
+    background:#0d1117;
+    color:#eee;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    overflow-x:hidden;
+    transition: background-color 0.5s, color 0.5s;
+  }
+  body.light { background:#f0f0f0; color:#111; }
+  body.light header::after { background: rgba(255,255,255,0.3); }
+  body.light .status-box { background:#eee; color:#111; border-color:#0072ff; }
+  body.light .status-box a, body.light #copy-ip-btn { color:#0072ff; }
 
-    /* Header */
-    header {
-      background: url('https://cdn.wallpapersafari.com/90/2/lBvVm1.jpg') center/cover no-repeat;
-      padding: 60px 20px;
-      text-align: center;
-      position: relative;
-      color: #fff;
-      flex-shrink: 0;
-    }
-    header::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: 1;
-    }
-    header * {
-      position: relative;
-      z-index: 2;
-    }
-    .logo {
-      width: 280px;
-      max-width: 90vw;
-      margin-bottom: 20px;
-    }
-    .nav {
-      margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      flex-wrap: wrap;
-      z-index: 2;
-      position: relative;
-    }
-    .nav a {
-      background: #00c6ff;
-      color: #0d1117;
-      padding: 10px 22px;
-      border-radius: 25px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      text-decoration: none;
-      transition: background 0.3s, color 0.3s, box-shadow 0.3s;
-      box-shadow: 0 4px 8px rgb(0 198 255 / 0.3);
-    }
-    .nav a:hover {
-      background: #0072ff;
-      color: #fff;
-      box-shadow: 0 6px 12px rgb(0 114 255 / 0.6);
-    }
+  header {
+    background: url('https://cdn.wallpapersafari.com/90/2/lBvVm1.jpg') center/cover no-repeat;
+    padding: 60px 20px;
+    text-align:center;
+    position:relative;
+    color:#fff;
+    flex-shrink:0;
+  }
+  header::after { content:""; position:absolute; inset:0; background: rgba(0,0,0,0.6); z-index:1; }
+  header * { position:relative; z-index:2; }
+  .logo { width:280px; max-width:90vw; margin-bottom:20px; }
+  .nav { margin-top:25px; display:flex; justify-content:center; gap:15px; flex-wrap:wrap; position:relative; z-index:2; }
+  .nav a { background:#00c6ff; color:#0d1117; padding:10px 22px; border-radius:25px; font-weight:700; font-size:1.1rem; text-decoration:none; transition:all .3s; box-shadow:0 4px 8px rgb(0 198 255 / 0.3); }
+  .nav a:hover { background:#0072ff; color:#fff; box-shadow:0 6px 12px rgb(0 114 255 / 0.6); }
 
-    /* Content */
-    main {
-      max-width: 900px;
-      margin: 40px auto 60px;
-      padding: 0 20px;
-      flex-grow: 1;
-    }
-    h1 {
-      color: #4dd0e1;
-      font-weight: 700;
-      margin-bottom: 25px;
-      text-align: center;
-    }
-    h2 {
-      color: #00c6ff;
-      margin-top: 40px;
-      margin-bottom: 15px;
-      font-weight: 700;
-      border-left: 6px solid #00c6ff;
-      padding-left: 12px;
-    }
-    p {
-      color: #c0c9d1;
-      line-height: 1.6;
-      font-size: 1.1rem;
-      margin-bottom: 15px;
-    }
-    ul {
-      margin-top: 10px;
-      margin-left: 20px;
-      color: #c0c9d1;
-      font-size: 1.05rem;
-      list-style-type: disc;
-      margin-bottom: 20px;
-    }
-    ul li {
-      margin-bottom: 8px;
-    }
+  .status { margin-top:20px; display:flex; justify-content:center; flex-wrap:wrap; gap:20px; }
+  .status-box { background:#1c1c1c; padding:12px 25px; border-radius:12px; border:2px solid #00c6ff; }
+  .status-box span { display:flex; align-items:center; gap:10px; margin-top:5px; color:#ccc; font-size:0.95rem; }
+  .status-box code { background:#222; padding:3px 8px; border-radius:6px; user-select: all; font-family: monospace; }
+  .status-box a { color:#00c6ff; text-decoration:none; display:flex; align-items:center; gap:6px; }
+  #copy-ip-btn { background:#00c6ff; border:none; border-radius:6px; padding:4px 8px; cursor:pointer; font-size:1rem; transition: background-color .3s; color:#0d1117; }
+  #copy-ip-btn:hover { background:#0072ff; color:white; }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #0e0e0e;
-      color: #777;
-      font-size: 0.9rem;
-      flex-shrink: 0;
-    }
+  main { max-width:900px; margin:40px auto 60px; padding:0 20px; flex-grow:1; }
+  h1 { color:#4dd0e1; font-weight:700; text-align:center; margin-bottom:25px; }
+  h2 { color:#00c6ff; font-weight:700; margin-top:40px; margin-bottom:15px; border-left:6px solid #00c6ff; padding-left:12px; }
+  p { color:#c0c9d1; line-height:1.6; font-size:1.1rem; margin-bottom:15px; }
+  ul { margin-top:10px; margin-left:20px; color:#c0c9d1; font-size:1.05rem; list-style-type: disc; margin-bottom:20px; }
+  ul li { margin-bottom:8px; }
 
-    /* Loader with cube animation */
-    #loader {
-      position: fixed;
-      inset: 0;
-      background: linear-gradient(135deg, #00c6ff, #0072ff);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      user-select: none;
-    }
-    .cube {
-      width: 80px;
-      height: 80px;
-      position: relative;
-      transform-style: preserve-3d;
-      animation: rotateCube 3s linear infinite;
-      margin-bottom: 20px;
-    }
-    .face {
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      background: #005b96;
-      border: 3px solid #003f63;
-      box-shadow: inset 0 0 10px #3399ff;
-    }
-    .face.top {
-      background: linear-gradient(135deg, #00e5ff, #0077be);
-      border-color: #006494;
-      box-shadow: inset 0 0 10px #4dd0e1;
-    }
-    .face.front  { transform: translateZ(40px); }
-    .face.back   { transform: rotateY(180deg) translateZ(40px); }
-    .face.right  { transform: rotateY(90deg) translateZ(40px); }
-    .face.left   { transform: rotateY(-90deg) translateZ(40px); }
-    .face.top    { transform: rotateX(90deg) translateZ(40px); }
-    .face.bottom { transform: rotateX(-90deg) translateZ(40px); }
-    @keyframes rotateCube {
-      from { transform: rotateX(0) rotateY(0); }
-      to { transform: rotateX(360deg) rotateY(360deg); }
-    }
-    .loader-text {
-      color: white;
-      font-weight: 700;
-      font-size: 1.2rem;
-    }
+  footer { text-align:center; padding:20px; background:#0e0e0e; color:#777; font-size:.9rem; flex-shrink:0; }
 
-    /* Responsive tweaks */
-    @media (max-width: 720px) {
-      .logo {
-        width: 220px;
-      }
-      .nav a {
-        font-size: 1rem;
-        padding: 8px 18px;
-      }
-      main {
-        margin: 20px 15px 40px;
-      }
-      p, ul {
-        font-size: 1rem;
-      }
-    }
-  </style>
+  #theme-toggle { position:fixed; top:20px; right:20px; z-index:9999; background:#0072ff; color:white; border:none; padding:10px 14px; border-radius:50%; cursor:pointer; font-size:1.2rem; transition:background .3s; }
+  #theme-toggle:hover { background:#00c6ff; }
+
+  /* Loader */
+  #loader { position:fixed; inset:0; background:linear-gradient(135deg,#00c6ff,#0072ff); display:flex; flex-direction:column; justify-content:center; align-items:center; z-index:9999; user-select:none; }
+  .cube { width:80px; height:80px; position:relative; transform-style:preserve-3d; animation:rotateCube 3s linear infinite; margin-bottom:20px; }
+  .face { position:absolute; width:80px; height:80px; background:#005b96; border:3px solid #003f63; box-shadow: inset 0 0 10px #3399ff; }
+  .face.top { background:linear-gradient(135deg,#00e5ff,#0077be); border-color:#006494; box-shadow: inset 0 0 10px #4dd0e1; }
+  .face.front{ transform:translateZ(40px); }
+  .face.back{ transform:rotateY(180deg) translateZ(40px); }
+  .face.right{ transform:rotateY(90deg) translateZ(40px); }
+  .face.left{ transform:rotateY(-90deg) translateZ(40px); }
+  .face.top{ transform:rotateX(90deg) translateZ(40px); }
+  .face.bottom{ transform:rotateX(-90deg) translateZ(40px); }
+  @keyframes rotateCube { from{transform:rotateX(0) rotateY(0);} to{transform:rotateX(360deg) rotateY(360deg);} }
+  .loader-text { color:white; font-weight:700; font-size:1.2rem; }
+
+  @media(max-width:720px){
+    .logo{width:220px;}
+    .nav a{font-size:1rem; padding:8px 18px;}
+    main{margin:20px 15px 40px;}
+    p, ul{font-size:1rem;}
+  }
+</style>
 </head>
 <body>
-  <!-- Loader -->
-  <div id="loader">
-    <div class="cube">
-      <div class="face front"></div>
-      <div class="face back"></div>
-      <div class="face right"></div>
-      <div class="face left"></div>
-      <div class="face top"></div>
-      <div class="face bottom"></div>
-    </div>
-    <div class="loader-text">BetterLK Minecraft...</div>
+
+<!-- Loader -->
+<div id="loader">
+  <div class="cube">
+    <div class="face front"></div>
+    <div class="face back"></div>
+    <div class="face right"></div>
+    <div class="face left"></div>
+    <div class="face top"></div>
+    <div class="face bottom"></div>
   </div>
+  <div class="loader-text">BetterLK Minecraft...</div>
+</div>
 
-  <!-- Main content -->
-  <header>
-    <img class="logo" src="logo.png" alt="BetterLK Logo" />
-    <nav class="nav">
-      <a href="index.html">Home</a>
-    </nav>
-  </header>
+<!-- Theme Toggle -->
+<button id="theme-toggle" title="Toggle Dark/Light">🌙</button>
 
-  <main id="main-content" style="display:none;">
-    <h1>About Better Minecraft</h1>
-    <p>Better Minecraft is a popular modpack designed to enhance your vanilla Minecraft experience with carefully curated mods that improve gameplay, add quality-of-life features, and provide exciting new mechanics without breaking the classic feel.</p>
+<!-- Header -->
+<header>
+  <img class="logo" src="blk.png" alt="BetterLK Logo" />
+  <nav class="nav">
+    <a href="index.html">Home</a>
+  </nav>
 
-    <h2>Features</h2>
-    <ul>
-      <li>Optimized performance and stability</li>
-      <li>New biomes, mobs, and items</li>
-      <li>Land claiming and protection systems</li>
-      <li>Auction shops to trade items securely</li>
-      <li>Improved crafting and resource gathering</li>
-      <li>Regular updates with community feedback</li>
-    </ul>
+  <div class="status">
+    <div class="status-box">
+      <strong>Server IP</strong>
+      <span>
+        <code id="server-ip">betterlk.nx-mc.xyz:25605</code>
+        <button id="copy-ip-btn">📋</button>
+      </span>
+    </div>
+    <div class="status-box">
+      <strong>Discord</strong>
+      <span>
+        <a href="https://discord.gg/vSeWKUYF4w" target="_blank">
+          <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/discord.svg" width="16" style="vertical-align:middle;margin-right:4px;">Join
+        </a>
+      </span>
+    </div>
+  </div>
+</header>
 
-    <h2>Minimum System Requirements</h2>
-    <ul>
-      <li><strong>CPU:</strong> Intel Core i3 or equivalent</li>
-      <li><strong>RAM:</strong> 8 GB (recommend 12 GB for smooth experience)</li>
-      <li><strong>Storage:</strong> At least 10 GB free SSD space</li>
-      <li><strong>GPU:</strong> NVIDIA GTX 660 or AMD Radeon HD 7870 or better</li>
-      <li><strong>OS:</strong> Windows 10/11, macOS 10.14+, Linux (modern distros)</li>
-      <li><strong>Java:</strong> Latest Java 17 runtime (bundled with launcher)</li>
-      <li><strong>Internet:</strong> Stable broadband connection for multiplayer</li>
-    </ul>
+<!-- Main Content -->
+<main id="main-content" style="display:none;">
+  <h1>About BetterLK Survival Server</h1>
+  <p>BetterLK is a fully customized Minecraft Survival server for Sri Lankan players. Explore, build, and compete in a friendly and fun environment with custom features tailored for the best survival experience.</p>
 
-    <h2>Recommended Settings</h2>
-    <p>For the best experience on Better Minecraft:</p>
-    <ul>
-      <li>CPU:</strong> Intel Core i5 6 gen </li>
-      <li>Allocate 12-16 GB RAM if possible</li>
-      <li>Use OptiFine or Sodium for better FPS</li>
-      <li>Keep your GPU drivers up to date</li>
-      <li>Play on recommended servers like BetterLK for full features</li>
-    </ul>
-  </main>
+  <h2>Server Features</h2>
+  <ul>
+    <li>Custom land claim system to protect your builds</li>
+    <li>Auction shop for trading items with other players</li>
+    <li>Economy system with in-game currency</li>
+    <li>Fun events and mini-games regularly hosted</li>
+    <li>Safe and moderated community</li>
+    <li>Regular updates and new content</li>
+  </ul>
 
-  <footer>
-    &copy; 2025 BetterLK Network. All Rights Reserved.
-  </footer>
+  <h2>How to Join</h2>
+  <p>Connect using the server IP: <strong>betterlk.nx-mc.xyz:25605</strong> and enjoy all the survival features. Join our Discord for support and community activities.</p>
 
-  <script>
-    window.addEventListener('load', () => {
-      const loader = document.getElementById('loader');
-      const main = document.getElementById('main-content');
-      setTimeout(() => {
-        loader.style.transition = 'opacity 0.6s ease';
-        loader.style.opacity = '0';
-        setTimeout(() => {
-          loader.style.display = 'none';
-          main.style.display = 'block';
-        }, 600);
-      }, 3000);
-    });
-  </script>
+  <h2>Community Guidelines</h2>
+  <ul>
+    <li>Respect all players and staff</li>
+    <li>No griefing or stealing without permission</li>
+    <li>Using cheats or exploits is strictly prohibited</li>
+    <li>Have fun and help new players!</li>
+  </ul>
+</main>
+
+<footer>
+  &copy; 2025 BetterLK Network. All Rights Reserved.
+</footer>
+
+<script>
+window.addEventListener('load', () => {
+  const loader = document.getElementById('loader');
+  const main = document.getElementById('main-content');
+  setTimeout(() => {
+    loader.style.transition='opacity 0.6s ease';
+    loader.style.opacity='0';
+    setTimeout(() => { loader.style.display='none'; main.style.display='block'; }, 600);
+  }, 3000);
+
+  // Copy server IP
+  document.getElementById('copy-ip-btn').addEventListener('click', ()=>{
+    const ipText = document.getElementById('server-ip').textContent;
+    navigator.clipboard.writeText(ipText).then(()=>alert('Server IP copied!')).catch(()=>alert('Copy failed'));
+  });
+
+  // Theme toggle
+  const themeBtn = document.getElementById('theme-toggle');
+  themeBtn.addEventListener('click', ()=>{
+    document.body.classList.toggle('light');
+    themeBtn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+  });
+});
+</script>
 </body>
 </html>
-
