@@ -3,142 +3,119 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BetterLK Ranks</title>
+  <title>BLK Ranks</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
     * { margin:0; padding:0; box-sizing:border-box; }
-    body { font-family:'Poppins',sans-serif; background:#0d1117; color:#eee; min-height:100vh; overflow-x:hidden; }
+    body { font-family:'Poppins',sans-serif; background:#0d1117; color:#eee; min-height:100vh; overflow-x:hidden; transition: background 0.3s, color 0.3s; }
 
-    /* Back Button as Link */
+    /* Light Mode */
+    body.light-mode { background:#f9f9f9; color:#111; }
+    body.light-mode .rank-card { background:#fff; box-shadow:0 5px 20px #00000022; }
+    body.light-mode header.hero { box-shadow:0 0 20px #0072ff55; }
+    body.light-mode footer { background:#f0f0f0; color:#444; }
+    body.light-mode .btn, 
+    body.light-mode .btn-buy { color:#fff; }
+    body.light-mode .tag-gold { color:#111; }
+    body.light-mode .tag-diamond, 
+    body.light-mode .tag-netherite { color:#fff; }
+
+    /* Toggle Button */
+    #theme-toggle {
+      position: fixed;
+      top: 20px; right: 20px;
+      background: #0072ff;
+      border: none; outline: none;
+      color: #fff;
+      font-size: 1.3rem;
+      padding: 10px 14px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 4px 10px #0072ff88;
+      z-index: 9100;
+      transition: background 0.3s;
+    }
+    #theme-toggle:hover { background:#005bb5; }
+
+    /* Back Button */
     #back-btn {
       text-decoration: none;
       display: none;
       position: fixed;
-      top: 20px;
-      left: 20px;
+      top: 20px; left: 20px;
       z-index: 9000;
       padding: 10px 20px;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #fff;
-      background: #0072ff;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
+      font-size: 1rem; font-weight: 600;
+      color: #fff; background: #0072ff;
+      border-radius: 30px; cursor: pointer;
       box-shadow: 0 4px 10px #0072ff88;
       transition: background 0.3s;
     }
-    #back-btn:hover {
-      background: #005bb5;
-      box-shadow: 0 6px 20px #005bb5aa;
-    }
+    #back-btn:hover { background:#005bb5; box-shadow:0 6px 20px #005bb5aa; }
 
+    /* Loader Cube */
     #loader {
       position:fixed; inset:0;
       background:linear-gradient(135deg,#00c6ff,#0072ff);
       display:flex; flex-direction:column;
       justify-content:center; align-items:center;
-      z-index:9999; user-select:none;
+      z-index:9999;
     }
-    .cube {
-      width:80px; height:80px;
-      position:relative; transform-style:preserve-3d;
-      animation:rotateCube 3s linear infinite;
-      margin-bottom:20px;
-    }
-    .face {
-      position:absolute; width:80px; height:80px;
-      background:#005b96; border:3px solid #003f63;
-      box-shadow:inset 0 0 10px #3399ff;
-    }
-    .face.top {
-      background:linear-gradient(135deg,#00e5ff,#0077be);
-      border-color:#006494;
-      box-shadow:inset 0 0 10px #4dd0e1;
-    }
-    .face.front  { transform:translateZ(40px); }
-    .face.back   { transform:rotateY(180deg) translateZ(40px);}
-    .face.right  { transform:rotateY(90deg) translateZ(40px);}
-    .face.left   { transform:rotateY(-90deg) translateZ(40px);}
-    .face.top    { transform:rotateX(90deg) translateZ(40px);}
-    .face.bottom { transform:rotateX(-90deg) translateZ(40px);}
-    @keyframes rotateCube { from {transform:rotateX(0) rotateY(0);} to {transform:rotateX(360deg) rotateY(360deg);} }
-
+    .cube { width:80px; height:80px; position:relative; transform-style:preserve-3d; animation:rotateCube 3s linear infinite; margin-bottom:20px; }
+    .face { position:absolute; width:80px; height:80px; background:#005b96; border:3px solid #003f63; box-shadow:inset 0 0 10px #3399ff; }
+    .face.top { background:linear-gradient(135deg,#00e5ff,#0077be); border-color:#006494; box-shadow:inset 0 0 10px #4dd0e1; }
+    .face.front{transform:translateZ(40px);} .face.back{transform:rotateY(180deg) translateZ(40px);}
+    .face.right{transform:rotateY(90deg) translateZ(40px);} .face.left{transform:rotateY(-90deg) translateZ(40px);}
+    .face.top{transform:rotateX(90deg) translateZ(40px);} .face.bottom{transform:rotateX(-90deg) translateZ(40px);}
+    @keyframes rotateCube { from{transform:rotateX(0) rotateY(0);} to{transform:rotateX(360deg) rotateY(360deg);} }
     .loader-text { color:white; font-weight:700; font-size:1.2rem; }
 
+    /* Main Content */
     #main-content { opacity:0; transform:translateY(20px); animation:fadeIn 0.8s ease forwards; animation-play-state:paused; max-width:1200px; margin:0 auto; padding:20px; }
     @keyframes fadeIn { to { opacity:1; transform:translateY(0);} }
 
-    header.hero {
-      height:70vh; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden;
-      border-radius:12px; box-shadow:0 0 20px #00c6ff; text-align:center; color:#fff;
-    }
+    header.hero { height:70vh; display:flex; justify-content:center; align-items:center; position:relative; overflow:hidden; border-radius:12px; box-shadow:0 0 20px #00c6ff; text-align:center; color:#fff; }
     header.hero::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.5); }
     .hero-content { position:relative; z-index:2; max-width:700px; padding:0 15px; }
-    .hero-content h1 {
-      font-size:3.5rem; margin-bottom:15px;
-      background:linear-gradient(90deg,#00c6ff,#0072ff);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
+    .hero-content h1 { font-size:3.5rem; margin-bottom:15px; background:linear-gradient(90deg,#00c6ff,#0072ff); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
     .hero-content p { font-size:1.4rem; margin-bottom:25px; color:#f0e6e6cc; }
-    .btn {
-      background:#00c6ff; padding:12px 35px; font-weight:700; font-size:1.1rem; border:none; border-radius:50px;
-      color:#fff; box-shadow:0 4px 15px #00c6ffcc; transition:background .3s; text-decoration:none; cursor:pointer;
-    }
-    .btn:hover {
-      background:#0072ff; box-shadow:0 6px 20px #0072ffcc;
-    }
+    .btn { background:#00c6ff; padding:12px 35px; font-weight:700; font-size:1.1rem; border:none; border-radius:50px; color:#fff; box-shadow:0 4px 15px #00c6ffcc; transition:background .3s; text-decoration:none; cursor:pointer; }
+    .btn:hover { background:#0072ff; box-shadow:0 6px 20px #0072ffcc; }
 
-    .rank-cards {
-      display:flex; flex-wrap:wrap; gap:25px; margin-top:50px; justify-content:center; padding-bottom:50px;
-    }
-    .rank-card {
-      background:#1e1e1e; border-radius:15px; padding:25px 30px; width:300px;
-      box-shadow:0 5px 20px #00c6ff55; display:flex; flex-direction:column; align-items:center;
-      transition:transform .3s,box-shadow .3s;
-    }
-    .rank-card:hover {
-      transform:translateY(-10px); box-shadow:0 10px 30px #0072ffaa;
-    }
-    .rank-card h3 {
-      font-size:1.8rem; margin-bottom:12px;
-      background:linear-gradient(90deg,#00c6ff,#0072ff);
-      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
-    }
-    .price { font-size:1.4rem; font-weight:700; color:#4dd0e1; margin-bottom:18px;}
-    .rank-card ul {
-      list-style:none; width:100%; margin-bottom:20px; color:#ccc;
-    }
-    .rank-card ul li {
-      padding-left:22px; margin-bottom:10px; position:relative; font-size:1rem; user-select:none;
-    }
-    .rank-card ul li::before {
-      content:'✔'; position:absolute; left:0; top:0; color:#4dd0e1; font-weight:700;
-    }
-    .btn-buy {
-      margin-top:auto; padding:12px 35px; background:#00c6ff; color:#111; font-weight:700; border-radius:50px;
-      text-decoration:none; width:100%; text-align:center; box-shadow:0 4px 15px #00c6ffcc; transition:background .3s; user-select:none;
-    }
-    .btn-buy:hover {
-      background:#0099cc; box-shadow:0 6px 20px #0099cccc;
-    }
+    /* Rank Cards */
+    .rank-cards { display:flex; flex-wrap:wrap; gap:25px; margin-top:50px; justify-content:center; padding-bottom:50px; }
+    .rank-card { background:#1e1e1e; border-radius:15px; padding:25px 30px; width:300px; box-shadow:0 5px 20px #00c6ff55; display:flex; flex-direction:column; align-items:center; transition:transform .3s,box-shadow .3s; }
+    .rank-card:hover { transform:translateY(-10px); box-shadow:0 10px 30px #0072ffaa; }
+    .rank-card h3 { font-size:1.8rem; margin-bottom:12px; }
+    .tag { display:inline-block; padding:5px 15px; border-radius:30px; font-weight:700; margin-bottom:12px; }
+    .tag-gold { background:linear-gradient(90deg,#FFD700,#FFA500); color:#111; }
+    .tag-diamond { background:linear-gradient(90deg,#00BFFF,#1E90FF); color:#fff; }
+    .tag-netherite { background:linear-gradient(90deg,#4B0082,#2F2F2F); color:#fff; }
+    .rank-card img { width:70px; margin:15px auto; filter:drop-shadow(0 0 10px rgba(255,255,255,0.3)); }
+    .price { font-size:1.3rem; font-weight:700; color:#4dd0e1; margin-bottom:18px;}
+    .rank-card ul { list-style:none; width:100%; margin-bottom:20px; color:#ccc; }
+    .rank-card ul li { padding-left:22px; margin-bottom:10px; position:relative; font-size:1rem; }
+    .rank-card ul li::before { content:'✔'; position:absolute; left:0; color:#4dd0e1; }
+    .btn-buy { margin-top:auto; padding:12px 35px; background:#00c6ff; color:#111; font-weight:700; border-radius:50px; text-decoration:none; width:100%; text-align:center; box-shadow:0 4px 15px #00c6ffcc; transition:background .3s; }
+    .btn-buy:hover { background:#0099cc; box-shadow:0 6px 20px #0099cccc; }
 
-    footer {
-      text-align:center; padding:20px 10px; background:#0e0e0e; color:#777; font-size:.9rem;
-    }
+    footer { text-align:center; padding:20px 10px; background:#0e0e0e; color:#777; font-size:.9rem; }
 
-    @media(max-width:720px) {
-      header.hero { height:50vh; }
-      .hero-content h1 { font-size:2.4rem;}
-      .hero-content p { font-size:1.1rem;}
-      .btn, .btn-buy { font-size:1.2rem; padding:14px 25px;}
-      .rank-card { width:90%; max-width:400px;}
+    @media(max-width:720px){
+      header.hero{height:50vh;}
+      .hero-content h1{font-size:2.4rem;}
+      .hero-content p{font-size:1.1rem;}
+      .btn,.btn-buy{font-size:1.1rem;padding:12px 25px;}
+      .rank-card{width:90%;max-width:400px;}
     }
   </style>
 </head>
 <body>
-  <!-- Back Button as a link -->
+  <!-- Back Button -->
   <a id="back-btn" href="index.html">HOME</a>
+
+  <!-- Theme Toggle Button -->
+  <button id="theme-toggle">🌙</button>
 
   <!-- Loader -->
   <div id="loader">
@@ -150,39 +127,69 @@
       <div class="face top"></div>
       <div class="face bottom"></div>
     </div>
-    <div class="loader-text">Loading BetterLK Minecraft Sri Lanka...</div>
+    <div class="loader-text">Loading BLK Ranks...</div>
   </div>
 
   <!-- Main Content -->
   <div id="main-content" style="display:none;">
     <header class="hero">
-      <div class="overlay"></div>
       <div class="hero-content">
-        <h1>BetterLK Minecraft Sri Lanka</h1>
+        <h1>BLK Minecraft Sri Lanka</h1>
         <p>Support the Server by Purchasing Ranks</p>
         <a href="#ranks" class="btn">View Ranks</a>
       </div>
     </header>
 
+    <!-- Ranks -->
     <section id="ranks" class="rank-cards">
+
+      <!-- Gold -->
       <div class="rank-card">
-        <h3>Gold Package</h3><p class="price">$1.99</p>
-        <ul><li>Gold Supporter Tag</li><li>$200,000 In‑game Money</li><li>Custom sword</li><li>2 Home Saves</li></ul>
+        <span class="tag tag-gold">Gold ✦</span>
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/8/8a/Gold_Ingot_JE4_BE2.png" alt="Gold Ingot">
+        <h3>Gold Package</h3>
+        <p class="price">$1.99</p>
+        <ul>
+          <li>Gold Tag</li>
+          <li>3 Homes</li>
+          <li>$1M In-game Money</li>
+        </ul>
         <a class="btn-buy" href="borc.html" target="_blank">Buy Now</a>
       </div>
+
+      <!-- Diamond -->
       <div class="rank-card">
-        <h3>Diamond Package</h3><p class="price">$2.99</p>
-        <ul><li>Diamond Supporter Tag</li><li>$500,000 In‑game Money</li><li>Custom Sword & Pickaxe</li><li>4 Home Saves</li></ul>
+        <span class="tag tag-diamond">Diamond ✦</span>
+        <img src="https://minecraft.wiki/images/Diamond_JE3_BE3.png" alt="Diamond">
+        <h3>Diamond Package</h3>
+        <p class="price">$2.99</p>
+        <ul>
+          <li>Diamond Tag</li>
+          <li>5 Homes</li>
+          <li>$2M In-game Money</li>
+          <li>Custom Tool 2x</li>
+        </ul>
         <a class="btn-buy" href="borc.html" target="_blank">Buy Now</a>
       </div>
+
+      <!-- Netherite -->
       <div class="rank-card">
-        <h3>Mythic Package</h3><p class="price">$5.99</p>
-        <ul><li>Custom Server Tag</li><li>1x Netherrite ingot</li><li>$1,000,000 In‑game Money</li><li>Custom Sword & Armour</li><li>6 Home Saves</li></ul>
+        <span class="tag tag-netherite">Netherite ✦</span>
+        <img src="https://static.wikia.nocookie.net/minecraft_gamepedia/images/2/26/Netherite_Ingot_JE1_BE2.png" alt="Netherite Ingot">
+        <h3>Netherite Package</h3>
+        <p class="price">$5.99</p>
+        <ul>
+          <li>Custom Tag</li>
+          <li>7 Homes</li>
+          <li>$5M In-game Money</li>
+          <li>Custom Armour</li>
+          <li>Custom Tool 2x</li>
+        </ul>
         <a class="btn-buy" href="borc.html" target="_blank">Buy Now</a>
       </div>
     </section>
 
-    <footer>&copy; 2025 BetterLK Minecraft Sri Lanka. All rights reserved.</footer>
+    <footer>&copy; 2025 BLK Minecraft Sri Lanka. All rights reserved.</footer>
   </div>
 
   <script>
@@ -193,10 +200,9 @@
       const header = document.querySelector('header.hero');
 
       const backgrounds = [
-        'https://imgs.search.brave.com/2oh1F5msvOlI5kDNBcbLCAqGm6YWN76JsJeCdHIqXu8/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvR29sZC1NaW5l/LTEtMTAyNHg1NzYu/cG5n',
-        'https://imgs.search.brave.com/kTB-IHnfhjefUwzQOdHb7tyBegym0iL5_R8MAunn0v4/rs:fit:860:0:0:0/g:ce/aHR0cDovL3doYXRp/ZmdhbWluZy5jb20v/d3AtY29udGVudC91/cGxvYWRzLzIwMjEv/MDgvTWluZWNyYWZ0/LVJhaWxzLTEwMjR4/NTc2LnBuZw',
-        'https://imgs.search.brave.com/WI-vx3k9BOKsQzs7stBhipM15BxRykPNane3T02PX8M/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/Y2hlc3QvdGh1bWJu/YWlsLmpwZw',
-        'https://imgs.search.brave.com/VV7eQjWYuCB1rd8MC0RTLSFg5_VHvgiYAiDLzOFUiQI/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9uZXR0/LWhpZXIuczMuYW1h/em9uYXdzLmNvbS9t/Yy13YWxscGFwZXIv/bWluZXNoYWZ0Mi90/aHVtYm5haWwuanBn',
+        'https://imgs.search.brave.com/keyeOSft-VQA_gcNa00OQTQzrumooRaZSTsZWkv0c5g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJjYXZlLmNv/bS93cC93cDg3OTMz/ODcuanBn',
+        'https://imgs.search.brave.com/J5MAqqcjVkp3PNOjrfTDy4zLof2zNIGBuNDhs8Lvi0k/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvaGQvbWlu/ZWNyYWZ0LXN1cnZp/dmFsLTE5MjAteC0x/MDgwLXdhbGxwYXBl/ci1vczN2aXB0NzBt/NXZlNnQwLmpwZw',
+        'https://imgs.search.brave.com/rDrAaQMMGkyWevjSCsr6az44MUjCdJMmSMdqfWqHUYc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93YWxs/cGFwZXJzLmNvbS9p/bWFnZXMvaGQvbWlu/ZWNyYWZ0LXN1cnZp/dmFsLTE5MjAteC0x/MDgwLXdhbGxwYXBl/ci0ycnVxMWcxM2N2/MDY5ZWR2LmpwZw'
       ];
       let idx = 0;
       function switchBg(){
@@ -217,9 +223,17 @@
         }, 600);
       }, 4000);
     });
+
+    // Theme Toggle
+    const themeBtn = document.getElementById("theme-toggle");
+    themeBtn.addEventListener("click", () => {
+      document.body.classList.toggle("light-mode");
+      if(document.body.classList.contains("light-mode")){
+        themeBtn.textContent = "☀️";
+      } else {
+        themeBtn.textContent = "🌙";
+      }
+    });
   </script>
 </body>
 </html>
-
-
-
