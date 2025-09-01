@@ -85,6 +85,7 @@
     border: none;
     background: #007bff;
   }
+  .btn.back { background: #ff4757; }
   .btn:hover {
     transform: translateY(-3px) scale(1.05);
     opacity: 0.9;
@@ -102,7 +103,7 @@
 <!-- Loader -->
 <div class="loader">
   <img src="blk.png" alt="BetterLK Logo">
-  <div class="loader-text">Processing Payment...</div>
+  <div class="loader-text">Processing...</div>
   <div class="progress-bar">
     <div class="progress-fill"></div>
   </div>
@@ -111,8 +112,11 @@
 <!-- Content -->
 <div class="content">
   <h1>BetterLK Payment</h1>
-  <p>Click "Pay Now" to proceed with the payment</p>
-  <button class="btn" id="payNowBtn">💳 Pay Now</button>
+  <p>Click "Pay Now" to proceed with your payment</p>
+  <div style="display:flex; flex-direction:column; gap:15px; align-items:center;">
+    <button class="btn" id="payNowBtn">💳 Pay Now</button>
+    <button class="btn back" id="backBtn">⬅ Back</button>
+  </div>
 </div>
 
 <script>
@@ -140,12 +144,19 @@
     },200);
   }
 
-  // Pay Now button click
+  // Pay Now button
   document.getElementById('payNowBtn').addEventListener('click', ()=>{
     content.style.display='none';
     showLoader(()=>{
-      // Redirect to Bank/WhatsApp payment
       window.location.href = "https://wa.me/94761072773?text=B+Nipuna+indrajith/263200130064918/kuruwita/peoples_bank/transfer+your+package+money+and+send+recipt+to+this+number";
+    });
+  });
+
+  // Back button
+  document.getElementById('backBtn').addEventListener('click', ()=>{
+    content.style.display='none';
+    showLoader(()=>{
+      window.location.href = "supporter.html";
     });
   });
 </script>
